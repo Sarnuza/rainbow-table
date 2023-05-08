@@ -1,1 +1,1 @@
-# kry-programming-exercise-rainbow-table
+# Kry Rainbow Table

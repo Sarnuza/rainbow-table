@@ -5,11 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class RainbowTable {
-
-    private static final String MD5_ALGORITHM_NAME = "md5";
     private static final int CHAIN_LENGTH = 2000;
 
-    private final MessageDigest md5 = MessageDigest.getInstance(MD5_ALGORITHM_NAME);
+    private final MessageDigest md5 = MessageDigest.getInstance("md5");
     private final ReductionFunction reductionFunction = new ReductionFunction();
 
     private final String[] startPasswords = PasswordGenerator.generatePasswords().toArray(String[]::new);
@@ -19,18 +17,17 @@ public class RainbowTable {
         for (int i = 0; i < startPasswords.length; i++) {
             String word = startPasswords[i];
             for (int o = 0; o < CHAIN_LENGTH; o++) {
-                word = hashAndApplyReductionFunction(word, o);
+                word = hashAndReduce(word, o);
             }
             endPasswords[i] = word;
         }
     }
 
     // Gets hash of string then applies the reduction function to it
-    private String hashAndApplyReductionFunction(String word, int linkIndex) {
+    private String hashAndReduce(String word, int linkIndex) {
         BigInteger hash = getHash(word);
-        return reductionFunction.apply(hash, linkIndex);
+        return reductionFunction.reduce(hash, linkIndex);
     }
-
 
     //get hash in biginteger by string
     private BigInteger getHash(String word) {
@@ -51,9 +48,9 @@ public class RainbowTable {
     // find a hash in the chain, return index of the chain if found, -1 otherwise
     private int findHashInChain(BigInteger hash) {
         for (int linkIndex = CHAIN_LENGTH - 1; linkIndex >= 0; linkIndex--) {
-            String word = reductionFunction.apply(hash, linkIndex);
+            String word = reductionFunction.reduce(hash, linkIndex);
             for (int o = linkIndex + 1; o < CHAIN_LENGTH; o++) {
-                word = hashAndApplyReductionFunction(word, o);
+                word = hashAndReduce(word, o);
             }
 
             int endWordIndex = -1;
@@ -79,7 +76,7 @@ public class RainbowTable {
         String password = startPasswords[chainIndex];
         BigInteger passwordHash = getHash(password);
         while (passwordHash.compareTo(hash) != 0) {
-            password = reductionFunction.apply(passwordHash, linkIndex++);
+            password = reductionFunction.reduce(passwordHash, linkIndex++);
             passwordHash = getHash(password);
         }
 

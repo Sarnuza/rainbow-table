@@ -8,7 +8,8 @@ public class ReductionFunction {
     private static final BigInteger SYMBOLS_LENGTH = BigInteger.valueOf(SYMBOLS.length);
     private static final int PASSWORD_LENGTH = 7;
 
-    public String apply(BigInteger hash, Integer step) {
+    // applies reduction function to hash
+    public String reduce(BigInteger hash, Integer step) {
         BigInteger _hash = hash.add(BigInteger.valueOf(step));
         int[] remainder = new int[PASSWORD_LENGTH];
         for (int i = 0; i < PASSWORD_LENGTH; i++) {
