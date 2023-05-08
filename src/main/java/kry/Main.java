@@ -9,6 +9,6 @@ public class Main {
         RainbowTable rainbowTable = new RainbowTable();
 
         BigInteger hash = new BigInteger("1d56a37fb6b08aa709fe90e12ca59e12", 16);
-        System.out.println(rainbowTable.findPasswordByHash(hash));
+        System.out.println("Password is: " + rainbowTable.findPasswordByHash(hash));
     }
 }
