@@ -17,10 +17,10 @@ public class ReductionFunction {
             _hash = _hash.divide(SYMBOLS_LENGTH);
         }
 
-        char[] word = new char[PASSWORD_LENGTH];
+        char[] password = new char[PASSWORD_LENGTH];
         for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            word[i] = SYMBOLS[remainder[PASSWORD_LENGTH - 1 - i]];
+            password[i] = SYMBOLS[remainder[PASSWORD_LENGTH - 1 - i]];
         }
-        return String.valueOf(word);
+        return String.valueOf(password);
     }
 }

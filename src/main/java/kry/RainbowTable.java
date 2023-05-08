@@ -15,23 +15,23 @@ public class RainbowTable {
 
     public RainbowTable() throws NoSuchAlgorithmException {
         for (int i = 0; i < startPasswords.length; i++) {
-            String word = startPasswords[i];
+            String password = startPasswords[i];
             for (int o = 0; o < CHAIN_LENGTH; o++) {
-                word = hashAndReduce(word, o);
+                password = hashAndReduce(password, o);
             }
-            endPasswords[i] = word;
+            endPasswords[i] = password;
         }
     }
 
     // Gets hash of string then applies the reduction function to it
-    private String hashAndReduce(String word, int linkIndex) {
-        BigInteger hash = getHash(word);
+    private String hashAndReduce(String password, int linkIndex) {
+        BigInteger hash = getHash(password);
         return reductionFunction.reduce(hash, linkIndex);
     }
 
     //get hash in biginteger by string
-    private BigInteger getHash(String word) {
-        byte[] digest = md5.digest(word.getBytes());
+    private BigInteger getHash(String password) {
+        byte[] digest = md5.digest(password.getBytes());
         return new BigInteger(1, digest);
     }
 
@@ -48,22 +48,22 @@ public class RainbowTable {
     // find a hash in the chain, return index of the chain if found, -1 otherwise
     private int findHashInChain(BigInteger hash) {
         for (int linkIndex = CHAIN_LENGTH - 1; linkIndex >= 0; linkIndex--) {
-            String word = reductionFunction.reduce(hash, linkIndex);
+            String password = reductionFunction.reduce(hash, linkIndex);
             for (int o = linkIndex + 1; o < CHAIN_LENGTH; o++) {
-                word = hashAndReduce(word, o);
+                password = hashAndReduce(password, o);
             }
 
-            int endWordIndex = -1;
+            int endPasswordIndex = -1;
 
             for (int i = 0; i < endPasswords.length; i++) {
-                if (endPasswords[i].equals(word)) {
-                    endWordIndex = i;
+                if (endPasswords[i].equals(password)) {
+                    endPasswordIndex = i;
                     break;
                 }
             }
 
-            if (endWordIndex != -1) {
-                return endWordIndex;
+            if (endPasswordIndex != -1) {
+                return endPasswordIndex;
             }
         }
 

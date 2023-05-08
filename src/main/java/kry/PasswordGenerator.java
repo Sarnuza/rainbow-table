@@ -11,24 +11,24 @@ public class PasswordGenerator {
     private static final int PASSWORD_LENGTH = 7;
 
     public static List<String> generatePasswords() {
-        List<String> words = new ArrayList<>(NUMBER_OF_PASSWORDS_TO_GENERATE);
-        generatePassword(words, new char[PASSWORD_LENGTH], 0);
-        return words;
+        List<String> passwords = new ArrayList<>(NUMBER_OF_PASSWORDS_TO_GENERATE);
+        generatePassword(passwords, new char[PASSWORD_LENGTH], 0);
+        return passwords;
     }
 
     //Generate first PASSWORD_LENGTH passwords by SYMBOLS
-    private static void generatePassword(List<String> passwords, char[] word, int characterIndex) {
+    private static void generatePassword(List<String> passwords, char[] password, int characterIndex) {
         if (passwords.size() >= NUMBER_OF_PASSWORDS_TO_GENERATE) {
             return;
         }
         if (characterIndex == PASSWORD_LENGTH) {
-            passwords.add(String.valueOf(word));
+            passwords.add(String.valueOf(password));
             return;
         }
 
         for (char c : SYMBOLS) {
-            word[characterIndex] = c;
-            generatePassword(passwords, word, characterIndex + 1);
+            password[characterIndex] = c;
+            generatePassword(passwords, password, characterIndex + 1);
         }
     }
 }
