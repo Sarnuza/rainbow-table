@@ -1,26 +1,24 @@
 package kry;
 
 import java.math.BigInteger;
-import java.util.function.BiFunction;
 
-public class ReductionFunction implements BiFunction<BigInteger, Integer, String> {
+public class ReductionFunction {
 
-    private static final char[] ALPHABET = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-    private static final BigInteger ALPHABET_LENGTH = BigInteger.valueOf(ALPHABET.length);
-    private static final int WORD_LENGTH = 7;
+    private static final char[] SYMBOLS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    private static final BigInteger SYMBOLS_LENGTH = BigInteger.valueOf(SYMBOLS.length);
+    private static final int PASSWORD_LENGTH = 7;
 
-    @Override
     public String apply(BigInteger hash, Integer step) {
-        BigInteger hash_ = hash.add(BigInteger.valueOf(step));
-        int[] remainder = new int[WORD_LENGTH];
-        for (int i = 0; i < WORD_LENGTH; i++) {
-            remainder[i] = hash_.remainder(ALPHABET_LENGTH).intValueExact();
-            hash_ = hash_.divide(ALPHABET_LENGTH);
+        BigInteger _hash = hash.add(BigInteger.valueOf(step));
+        int[] remainder = new int[PASSWORD_LENGTH];
+        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+            remainder[i] = _hash.remainder(SYMBOLS_LENGTH).intValueExact();
+            _hash = _hash.divide(SYMBOLS_LENGTH);
         }
 
-        char[] word = new char[WORD_LENGTH];
-        for (int i = 0; i < WORD_LENGTH; i++) {
-            word[i] = ALPHABET[remainder[WORD_LENGTH - 1 - i]];
+        char[] word = new char[PASSWORD_LENGTH];
+        for (int i = 0; i < PASSWORD_LENGTH; i++) {
+            word[i] = SYMBOLS[remainder[PASSWORD_LENGTH - 1 - i]];
         }
         return String.valueOf(word);
     }
